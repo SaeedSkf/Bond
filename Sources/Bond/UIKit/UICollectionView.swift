@@ -55,6 +55,15 @@ extension ReactiveExtensions where Base: UICollectionView {
             subject.send(indexPath)
         }
     }
+    
+    /// A signal that emits index paths of will display collection view cells.
+    ///
+    /// - Note: Uses collection view's `delegate` protocol proxy to observe calls made to `UICollectionViewDelegate.collectionView(_:willDisplay:forItemAt:)` method.
+    public var willDisplayItemIndexPath: SafeSignal<IndexPath> {
+        return delegate.signal(for: #selector(UICollectionViewDelegate.collectionView(_:willDisplay:forItemAt:))) { (subject: PassthroughSubject<IndexPath, Never>, _: UICollectionView, _: UICollectionViewCell, indexPath: IndexPath) in
+            subject.send(indexPath)
+        }
+    }
 }
 
 #endif
